@@ -1,0 +1,110 @@
+1) we will first create the Models
+     Model: The model is going to act as the interface of your data.
+            It is responsible for maintaining data. It is the logical data structure behind the entire application and is represented by a database (generally relational databases such as MySql, Postgres).
+
+     * we want two functionalities in our project i.e. we can Post a blog or Comment under a blog so we will create 2 models for that
+
+     * the Post model will required the following details:
+              author name,
+              title of blog,
+              text of blog,
+              creation date of blog and
+              published date of blog
+
+                      the published date can be null or blank bcoz its upto the user when he wants to publish his article/blog so basically the blog will
+                      saved into the draft until the user published it.
+
+     * if user decided to publish his blog thn the published date will be set to the current time with the help of 'timezone' library
+     * then posts can have comments on them which will bw visible to every visitor
+     * define 'get_absolute_url' to redirect yourself after you post your blog (we r redirecting to the detailed page of the blog)
+
+     * the Comment model will required the following details:
+              post that works as foreign key (for which post you want to comment)
+              author name who is posting comment
+              text of comment
+              creation date of comment
+              approved comment
+
+     * define 'get_absolute_url' to redirect yourself after you post your comment (we r redirecting to the home page i.e list of all the posts)
+
+2)  Forms, we will also going to learn how to set up the form widgets to correspond to CSS classes!
+    * we can add a widgets attribute to the Meta Class
+
+            widget attribute is a dictionary and you passing some arguments and paramenters into that dictionary that link the actual widget to the class.
+            later you can call that class name into your css file and it will affect the particular widget directly
+
+    * so when we want to post a blog we want the required fields of the 'Post' model to be available
+            author name
+            tile of blog
+            content of blog
+
+            * add in the widgets you want to apply
+
+    * for the 'Comment' model we want the blog to ask for the required fields
+            author name
+            content of comment
+
+            * add in the widgets you want to apply
+
+3) create a static and templates folder to store static files i.e. CSS and JS and templates i.e. HTML
+            you can define your own widgets in css
+
+            * setup the static and templates folder in settings.py
+
+            * setup the LOGIN_REDIRECT_URL = '/' in settings.py, it will redirect us to the home page once person logged in
+
+
+4) create views and templates and connect them to urls
+
+
+    # connect your templates along with your views and the URLs
+
+    # views means adding functionality to your website and functionalities are just you templates i.e. page you want to open for a particular click
+
+             * A view function is a Python function that takes a Web request and returns a Web response.
+               This response can be the HTML contents of a Web page, or a redirect, or a 404 error, or an XML document,
+               or an image, anything that a web browser can display. Django views are part of the user interface — they usually
+               render the HTML/CSS/Javascript in your Template files into what you see in your browser when you render a web page.
+
+
+             * functionalities we want in our Post Model:
+                    a. about website
+                    b. see the list of blogs
+                    c. see the detail of a particular blog
+                    d. create a new blog
+                    e. update the existing blog
+                    f. delete the existing blog
+                    g. see the list of blogs in draft
+
+
+             * we can only create, update, delete the blog when we r logged in and
+               '@login_required' doesnt work with CBV, and thats where 'LoginRequiredMixin' comes into the picture
+
+                     'LoginRequiredMixin' takes in couple more attributes that are necessary i.e.
+                                * login_url (i.e. incase person is not logged in thn where shoukd they go?)
+                                * redirect_field_name
+
+                     * in DeleteView we just need to connect to the model and call success_url.
+                        (remember when u r deleting a view, you dont want the success_url to actually activate until you delete it.\
+                         else you would kind of jumping always to another website or another page on your website and in order to achieve this we will use 'reverse_lazy' )
+
+
+            * functionalities we want in our Comment Model:
+                    a. add comment
+                    b. remove comment
+                    c. comment publication
+                    d. comment approval ( we r calling this bcoz its defined in Models also)
+
+
+            * we can only dothe above functions when user is logged in "@login_required" for FBV
+
+
+    # A URL is a web address. You can see a URL every time you visit a website – it is visible in your browser's address bar. (Yes! 127.0.0.1:8000 is a URL! And https://djangogirls.org is also a URL.)
+
+            * connect your views to the url
+
+
+
+5) wrap up all the urls by setting up a quick authentication system that runs on top of the "superuser" group in you project's urls.py file
+
+6) create templates
